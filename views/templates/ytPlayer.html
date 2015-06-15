@@ -1,0 +1,74 @@
+<div class="row ab-player"
+     ng-show="player && player.abPlayerReady && player.abPlayerReady == true">
+  <div>
+    <div class="screen box-center">
+      <youtube-video id="best-vid" player-vars="playerVars" player="player"
+                     player-height="200" player-width="200"></youtube-video>
+    </div>
+    <div class="song-info">
+      <span class="song-name">{{currentlyPlayingSongInfo.name}}</span><br/>
+      <span class="artist-name">{{currentlyPlayingSongInfo.artistName}}</span>
+    </div>
+    <div class="progress-slider" slider-hover>
+      <div>
+        <slider slider-id="song-progress-slider"
+                ng-model="currentlyPlayingSongInfo.currentTime"
+                min="sliderOptions.min"
+                max="sliderOptions.max"
+                range="false"
+                tooltip="hide"
+                on-start-slide="startDragging(currentlyPlayingSongInfo.currentTime)"
+                on-stop-slide="stopDragging(currentlyPlayingSongInfo.currentTime)"
+                precision="5">
+        </slider>
+      </div>
+
+      <!--<div ui-slider="sliderOptions" ng-model="currentlyPlayingSongInfo.currentTime"></div>-->
+      <!--something-->
+      <span>{{currentlyPlayingSongInfo.currentTime.toString().toHHMMSS()}}</span>
+      <span ng-if="currentlyPlayingSongInfo.DurationLeft">-{{currentlyPlayingSongInfo.DurationLeft.toString().toHHMMSS()}}</span>
+    </div>
+    <div style="clear: both;"></div>
+    <div class="control-wrapper">
+      <div class="control-container">
+      <span class="control-btn">
+        <span class="glyphicon glyphicon-backward" ng-click="backward()"></span>
+      </span>
+      <span class="play-control-btn ml5" ng-click="playPause()">
+        <span class="glyphicon" ng-class="player.currentState === 'playing'? 'glyphicon-pause' :
+        'glyphicon-play'"></span>
+      </span>
+      <span class="control-btn">
+        <span class="glyphicon glyphicon-forward" ng-click="forward()"></span>
+      </span>
+      </div>
+      <div style="clear: both;"></div>
+      <div class="player-setting-container">
+        <span class="setting-btn">
+          <span class="glyphicon glyphicon-random" ng-class="player && player.isShuffle ? 'shuffle' : ''"
+                ng-click="toggleShuffle()"></span>
+        </span>
+        <span class="setting-btn">
+          <span class="glyphicon glyphicon-retweet" ng-class="player && player.isRepeat ? 'repeat' : ''"
+                ng-click="toggleRepeat()"></span>
+        </span>
+        <span class="setting-btn clear-both-after">
+          <span class="glyphicon glyphicon-volume-up" show-hide-outside-element=".volume-slider"></span>
+        </span>
+      </div>
+      <div class="clear"></div>
+      <div class="volume-slider">
+        <span class="glyphicon glyphicon-volume-down"></span>
+        <slider ui-slider="volumnSliderOptions" ng-model="player.volume"
+             min="volumnSliderOptions.min"
+             max="volumnSliderOptions.max"
+             range="false"
+             precision="5"
+          ></slider>
+        <span class="glyphicon glyphicon-volume-up"></span>
+
+      </div>
+
+    </div>
+  </div>
+</div>

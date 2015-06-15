@@ -1,0 +1,218 @@
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+/*====END OF DEFAULTS====*/
+
+body{
+  background-color: #ffffff;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.playlist-nav li a:hover {
+  background-color: #CCCCEB;
+}
+
+.playlist-nav li a, .playlist-nav .add-new-playlist > span {
+
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: left;
+  -ms-flex-align: center;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: left;
+  -moz-box-align: center;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: left;
+  -webkit-box-align: center;
+
+  /* W3C */
+  display: box;
+  box-pack: left;
+  box-align: center;
+
+  background-color: #EBEBEB;
+  height: 60px;
+}
+
+.playlist-nav li a:after {
+  content: ' ';
+  clear: both;
+}
+
+.playlist-label{
+  margin-left: 5px;
+  position: relative;
+  top: -4px;
+
+}
+
+.playlist-nav .glyphicon {
+  font-size: 1.2em;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.clear-both-after:after {
+  content: ' ';
+  clear: both;
+}
+
+.box-center{
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: center;
+  -ms-flex-align: center;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+
+  /* W3C */
+  display: box;
+  box-pack: center;
+  box-align: center;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.ml5 {
+  margin-left: 5px;
+}
+
+.clear {
+  clear: both;
+}
+
+.on-hover {
+  display: none;
+}
+
+/* -----------Add new song modal ------------- */
+
+.add-new-song-modal .modal-dialog{
+  width: 800px;
+}
+
+.add-new-song-modal .video-thumb img{
+  width: 280px;
+  height: 160px;
+}
+
+/* ---------- Add New Playlist ------------- */
+
+.playlist-nav .add-new-playlist > span{
+  position: relative;
+  display: block;
+  padding: 15px 15px 10px;
+  border-radius: 4px;
+}
+
+.playlist-nav .add-new-playlist button.btn {
+  border-radius: 10px;
+  padding: 2px 7px 1px 5px;
+}
+
+.add-new-playlist-btn {
+  border-radius: 10px !important;
+}
+

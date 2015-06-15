@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css"/>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/youtubePlayer.css">
+    <!-- endbuild -->
+
+    <!-- build:js(.) scripts/oldieshim.js -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <![endif]-->
+    <!-- endbuild -->
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="../bower_components/jquery-ui/jquery-ui.min.js"></script>-->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
+    <script src="bower_components/angular-bootstrap-slider/slider.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+
+    <script src="ahboo.min.js"></script>
+    <script src="ahboo2.min.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- external non-bower library -->
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+
+
+</head>
+<body ng-app="ytApp">
+<div class="container-fluid" ng-controller="youtubePlayerController">
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <h4>Playlists</h4>
+            <ul class="nav nav-pills nav-stacked playlist-nav">
+                <li ng-repeat="playlist in playlistAry track by $index" ng-click="loadPlaylist(playlist)"
+                    show-on-hover="on-hover"
+                    hide-on-hover="music-icon" ng-dblclick="loadAndPlayPlaylist(playlist)"
+                    ng-class="playlist.isSelectedPlaylist ? 'active' : ''">
+                    <a href="#">
+                    <span class="pl-btn music-icon" ng-if="!playlist.currentlyPlaying">
+                      <span class="glyphicon glyphicon-music"></span>
+                    </span>
+                    <span ng-if="!playlist.currentlyPlaying" class="pl-btn  on-hover circle-btn" style="display: none;">
+                      <span class="glyphicon glyphicon-play"
+                            ng-click="loadAndPlayPlaylist(playlist)"></span>
+                    </span>
+                    <span ng-if="playlist.currentlyPlaying" class="pl-btn circle-btn">
+                      <span class="glyphicon glyphicon-pause" ng-click="pauseCurrentSong()"></span>
+                    </span>
+                        <span class="playlist-label">{{playlist.name}}</span>
+                    </a>
+                </li>
+                <!--ng-show="isOpenNewPlaylistForm"-->
+                <li ng-show="isOpenNewPlaylistForm" class="add-new-playlist">
+                  <span>
+                    <input type="text" ng-model="newPlaylistName" id="newPlaylistName" placeholder="New playlist">
+                    <button type="button" class="btn btn-success btn-xs" ng-click="addNewPlaylist(newPlaylistName)">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-xs" ng-click="resetPlaylistForm()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                  </span>
+                </li>
+
+            </ul>
+            <div class="mt10 ">
+                <button type="button" class="btn btn-danger add-new-playlist-btn" ng-click="openNewPlaylistForm()">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}
+                    </alert>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <h4>{{selectedPlaylist.name}}</h4>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="playOrPause(selectedPlaylist)"
+                                ng-disabled="isPlaylistEmpty(selectedPlaylist)">
+                            <span ng-class="selectedPlaylist.currentlyPlaying ? 'glyphicon-pause': 'glyphicon-play'"
+                                  class="glyphicon" aria-hidden="true"></span>
+                            {{selectedPlaylist.currentlyPlaying ? 'Pause': 'Play'}}
+                        </button>
+                        <!--<div class="btn-group" dropdown is-open="status.isopen">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                                <span class="glyphicon glyphicon-option-vertical"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" ng-click="openAddSongModal()">Add new song</a></li>
+                                <li><a href="#" ng-click="openEditPlaylistModal(selectedPlaylist)">Edit</a></li>
+                                <li><a href="#" ng-click="deletePlaylist(selectedPlaylist)">Delete</a></li>
+                            </ul>
+                        </div>-->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                    data-toggle="dropdown">
+                                <span class="glyphicon glyphicon-option-vertical"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" ng-click="openAddSongModal()">Add new song</a></li>
+                                <li><a href="#" ng-click="openEditPlaylistModal(selectedPlaylist)">Edit</a></li>
+                                <li><a href="#" ng-click="deletePlaylist(selectedPlaylist)">Delete</a></li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                    <table class="playlist-table table">
+                        <tr>
+                            <th style="width: 70px;"></th>
+                            <th>Song</th>
+                            <th>Artist</th>
+                            <th><span class="glyphicon glyphicon-time"></span></th>
+                            <th class="menu-col">&nbsp;</th>
+                        </tr>
+                        <tr ng-repeat="song in selectedPlaylist.playlist track by $index" show-on-hover="on-hover"
+                            hide-on-hover="glyphicon-volume-up"
+                            ng-class="song.currentlyPlaying ? 'playing' : ''"
+                            ng-dblclick="loadAndPlaySong(selectedPlaylist, $index)">
+                            <td>
+                                <span class="glyphicon glyphicon-volume-up" ng-if="song.currentlyPlaying"></span>
+                                <span ng-if="!song.currentlyPlaying" class="on-hover"
+                                      ng-click="loadAndPlaySong(selectedPlaylist, $index)" style="display: none;">
+                                    <span class="glyphicon glyphicon-play"></span>
+                                </span>
+                                <span ng-if="song.currentlyPlaying" class="on-hover" ng-click="pauseCurrentSong()"
+                                      style="display: none;"><span class="glyphicon glyphicon-pause"></span></span>
+                            </td>
+                            <td>{{song.name}}</td>
+                            <td>{{song.artistName}}</td>
+                            <td>{{song.duration}}</td>
+                            <td class="menu-col">
+                                <!--<div class="btn-group on-hover" dropdown is-open="status.isopen">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" dropdown-toggle
+                                            ng-disabled="disabled">
+                                        <span class="glyphicon glyphicon-option-vertical"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" ng-click="openEditSongModal(selectedPlaylist)">Edit</a></li>
+                                        <li><a href="#" ng-click="deleteSongFromPlaylist(selectedPlaylist)">Delete</a></li>
+                                    </ul>
+                                </div>-->
+                                <div class="btn-group on-hover">
+                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-option-vertical"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" ng-click="openEditSongModal(song)">Edit</a></li>
+                                        <li><a href="#"
+                                               ng-click="deleteSongFromPlaylist(selectedPlaylist, song, $index)">Delete</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <yt-player playlist="currentPlaylist" custom-player="ytPlayer"></yt-player>
+        </div>
+    </div>
+
+    <!-- Modal templates -->
+    <script type="text/ng-template" id="addNewSong.html">
+        <div class="modal-header">
+            <h3 ng-hide="editingSong">Add new song</h3>
+
+            <h3 ng-show="editingSong">Edit song</h3>
+        </div>
+        <div class="modal-body">
+
+            <form novalidate role="form" name="form" class="form-horizontal">
+                <fieldset>
+                    <div class="form-group youtube-url" ng-if="!editingSong">
+                        <label class="control-label col-sm-2" for="youtubeUrl">Youtube url:</label>
+
+                        <div class="col-sm-8">
+                            <input id="youtubeUrl" type="text" required placeholder="Enter youtube url"
+                                   ng-model="song.youtubeUrl"
+                                   class="form-control"/>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn" ng-click="checkYoutubeUrl(song.youtubeUrl)">Load Url</button>
+                        </div>
+
+                    </div>
+                    <div class="modal-video-detail" ng-if="isUrlLoaded">
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <label for="songName" class="col-sm-3">Song Name:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="songName" type="text" placeholder="Enter song name"
+                                           ng-model="song.name"
+                                           required class="form-control"/>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="artist" class="col-sm-3">Artist:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="artist" type="text" placeholder="Enter artist name"
+                                           ng-model="song.artistName"
+                                           required class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="artist" class="col-sm-3">Duration:</label>
+
+                                <div class="col-sm-9">
+                                    <input id="duration" disabled type="text" placeholder="Enter artist name"
+                                           ng-model="song.duration"
+                                           required class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="video-thumb">
+                                <img ng-src="{{song.videoThumbUrl}}">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok(form)">{{saveText}}</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+
+    </script>
+
+    <script type="text/ng-template" id="editPlaylist.html">
+        <div class="modal-header">
+            <h3 ng-show="editingSong">Edit playlist name</h3>
+        </div>
+        <div class="modal-body">
+            <form novalidate role="form" name="form" class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="playlistName">Playlist Name:</label>
+
+                        <div class="col-sm-8">
+                            <input id="playlistName" type="text" required placeholder="Enter youtube url"
+                                   ng-model="playlist.name" class="form-control"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok(form)">Save</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+
+    </script>
+
+</div>
+
+
+</body>
+</html>
