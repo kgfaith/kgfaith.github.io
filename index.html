@@ -45,8 +45,30 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <script src="ahboo.min.js"></script>
-    <script src="ahboo2.min.js"></script>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/app.settings.js"></script>
+    <script src="scripts/angular-youtube-embed.js"></script>
+
+    <!-- controllers -->
+    <script src="scripts/controllers/youTubePlayerController.js"></script>
+
+    <!-- directives -->
+    <script src="scripts/directives/ytPlayer.js"></script>
+    <script src="scripts/directives/showOnHover.js"></script>
+    <script src="scripts/directives/showHideOutsideElement.js"></script>
+    <script src="scripts/directives/hideOnHover.js"></script>
+    <script src="scripts/directives/sliderHover.js"></script>
+    <script src="scripts/directives/abPasteOrEnter.js"></script>
+
+    <!-- services -->
+    <script src="scripts/services/dataService.js"></script>
+    <script src="scripts/services/youtubeDataApiService.js"></script>
+    <script src="scripts/services/utilityService.js"></script>
+    <script src="scripts/services/localStorageService.js"></script>
+    <script src="scripts/services/playerService.js"></script>
+
+    <!-- endbuild -->
 
     <!-- external non-bower library -->
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
