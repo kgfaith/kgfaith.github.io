@@ -6,6 +6,9 @@ var appSettings = {
     localStorageKey: {
         playlist: 'ab.playlist',
         playerSetting: 'ab.playerSetting'
+    },
+    events: {
+        onPlaylistAddRemove: 'onPlaylistAddRemove'
     }
 };
 

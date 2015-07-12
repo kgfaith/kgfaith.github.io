@@ -60,6 +60,7 @@
     <script src="scripts/directives/hideOnHover.js"></script>
     <script src="scripts/directives/sliderHover.js"></script>
     <script src="scripts/directives/abPasteOrEnter.js"></script>
+    <script src="scripts/directives/setHeightOnPlaylistAddRemove.js"></script>
 
     <!-- services -->
     <script src="scripts/services/dataService.js"></script>
@@ -132,7 +133,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div id="playlist-panel" class="col-md-12" set-height-on-playlist-add-remove="" ng-style="style()">
                     <div>
                         <h4>{{selectedPlaylist.name}}</h4>
                         <button type="button" class="btn btn-primary btn-sm" ng-click="playOrPause(selectedPlaylist)"

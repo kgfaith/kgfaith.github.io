@@ -181,7 +181,6 @@ angular.module('youtube-embed', ['ng'])
                         scope.player.cuePlaylist(videoIds, 0, 0, 'medium')
                     }
                     setupPlayerDefaults(scope.player);
-                    scope.player.setVolume(scope.player.volume);
                     applyBroadcast(eventPrefix + 'ready', scope.player, event);
                 }
 
@@ -202,19 +201,29 @@ angular.module('youtube-embed', ['ng'])
                 }
 
                 scope.$watch('player.isShuffle', function (newValue) {
-                    if (scope.player && scope.player.setShuffle &&
-                        typeof scope.player.setShuffle === 'function') {
+                    if (scope.player && scope.player.setShuffle && typeof scope.player.setShuffle === 'function') {
                         scope.player.setShuffle(newValue);
+                        playerService.playerSetting.isShuffle = newValue;
                         playerService.savePlayerSetting();
                     }
                 });
 
                 scope.$watch('player.isRepeat', function (newValue) {
-                    if (scope.player && scope.player.setLoop &&
-                        typeof scope.player.setLoop === 'function') {
+                    if (scope.player && scope.player.setLoop && typeof scope.player.setLoop === 'function') {
                         scope.player.setLoop(newValue);
+                        playerService.playerSetting.isRepeat = newValue;
                         playerService.savePlayerSetting();
                     }
+                });
+
+                scope.$watch('player.volume', function (newValue) {
+                    if (_.isUndefined(newValue) ||  !_.isObject(scope.player) ||
+                        !_.isFunction(scope.player.setVolume)) {
+                        return;
+                    }
+                    scope.player.setVolume(newValue);
+                    playerService.playerSetting.volume = newValue;
+                    playerService.savePlayerSetting();
                 });
 
                 scope.$on(eventPrefix + 'playing', function (event, data) {
@@ -222,7 +231,6 @@ angular.module('youtube-embed', ['ng'])
                         scope.playerJustLoaded = false;
                         scope.player.setShuffle(scope.player.isShuffle);
                         scope.player.setLoop(scope.player.isRepeat);
-                        var something = 'something';
                     }
                 });
 

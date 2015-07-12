@@ -82,8 +82,6 @@ angular.module("ytApp").directive('ytPlayer', ['$http', 'youtubeEmbedUtils',
 
                 $scope.$on(eventPrefix + 'ready', function (event, data) {
                     $scope.customPlayer = $scope.player;
-                    $scope.customPlayer.volume = 50;
-
                 });
 
                 $scope.$on(eventPrefix + 'queued', function (event, data) {
@@ -184,13 +182,6 @@ angular.module("ytApp").directive('ytPlayer', ['$http', 'youtubeEmbedUtils',
                     startDragging = false;
                     $scope.player.seekTo(currentTime, true);
                 };
-
-                $scope.$watch('player.volume', function () {
-                    if (!_.isObject($scope.player) || !_.isFunction($scope.player.setVolume)) {
-                        return;
-                    }
-                    $scope.player.setVolume($scope.player.volume)
-                });
 
                 function setupCustomPlaylist() {
                     $scope.playerVars = {

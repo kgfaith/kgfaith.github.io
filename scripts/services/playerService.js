@@ -7,9 +7,7 @@ angular.module("ab.services").factory('playerService', ['localStorageService', '
             isShuffle: false,
             isRepeat: false
         };
-        var playerSetting = defaultPlayerSetting;
-
-        getPlayerSetting();
+        var playerSetting = getPlayerSetting();
 
         function getPlayerSetting(){
             var playerSetting = LocalStorageFactory.load(appSettings.localStorageKey.playerSetting);
